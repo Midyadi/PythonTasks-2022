@@ -1,12 +1,12 @@
 n,m = int(input()), int(input())
-a = [[0]*m for i in range(n)]
-for q in range(n):
-    for w in range(m):
-        if q>w:
-            a[q][w]=2
-        elif w>q:
-            a[q][w] = 1
+matrix = [[0]*m for i in range(n)]
+for line in range(n):
+    for column in range(m):
+        if line>column:
+            matrix[line][column]=2
+        elif column>line:
+            matrix[line][column] = 1
         else:
-            a[q][w] = 0
-for p in a:
-    print(*p)
+            matrix[line][column] = 0
+for Line in matrix:
+    print(*Line)
