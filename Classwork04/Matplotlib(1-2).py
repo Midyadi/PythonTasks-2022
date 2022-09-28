@@ -3,7 +3,7 @@ import matplotlib as mpl
 import numpy as np
 
 mpl.rcParams['font.size'] = 16
-plt.figure()
+plt.figure(figsize=(11,7))
 
 plt.title(r'$y = \sin x \cdot x^{-2}$')
 plt.xlabel("Ось X")
