@@ -21,7 +21,7 @@ transponded_matrix.dot(new_vec)
 
 # Номер 7
 srez = transponded_matrix[::2,1::4]
-with open('matrix for numpy(7).dat','w') as mat:
+with open('matrix for numpy(7).dat', 'w') as mat:
     for line in srez:
         print(*line,file=mat)
 
