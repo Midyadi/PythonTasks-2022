@@ -3,7 +3,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 mpl.rcParams['font.size']=16
-plt.figure(figsize=(7,7))
+plt.figure()
 
 plt.title(r'$e ^{-x \cdot \sin x}$')
 plt.xlabel("Ось X")
