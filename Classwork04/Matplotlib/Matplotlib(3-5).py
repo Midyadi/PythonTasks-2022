@@ -3,17 +3,17 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 # Настройка шрифта
-mpl.rcParams['font.size']=16
+mpl.rcParams['font.size'] = 16
 
 # Настройка графика
-plt.figure(figsize=(6,6))
+plt.figure(figsize=(6, 6))
 plt.title(r'$e ^{-x \cdot \sin x}$')
 plt.xlabel("Ось X")
 plt.ylabel("Ось Y")
-plt.ylim(0,5)
+plt.ylim(0, 5)
 
 # Построение данных
-x_data = np.linspace(10,100,1001)
+x_data = np.linspace(10, 100, 1001)
 y_data = np.exp(-x_data * np.sin(x_data))
 
 plt.plot(x_data, y_data)
