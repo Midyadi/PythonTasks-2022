@@ -93,6 +93,6 @@ print(df.groupby(["State"]).agg({'Total day charge':'sum'}).sort_values(by="Tota
 print("\n\nНомер 17")
 print(df.groupby(['Area code']).mean(numeric_only=True))
 
-# Номер 17
-print("\n\nНомер 17")
+# Номер 18
+print("\n\nНомер 18")
 print(df.loc[[100,102,104],['State', 'Churn']])
