@@ -80,8 +80,19 @@ print(df['Total intl minutes'].mean())
 
 # Номер 14
 print("\n\nНомер 14")
-Day = pd.DataFrame(df[['Total day calls','Total day minutes']].sum())
-Eve = pd.DataFrame(df[['Total eve calls','Total eve minutes']].sum())
-Night = pd.DataFrame(df[['Total night calls','Total night minutes']].sum())
-x = pd.DataFrame({'Day': Day, 'Eve': Eve, 'Night': Night})
-print(x)
+
+# Номер 15
+print("\n\nНомер 15")
+print(df.groupby("Churn").agg({'Total day charge':'sum'}))
+
+# Номер 16
+print("\n\nНомер 16")
+print(df.groupby(["State"]).agg({'Total day charge':'sum'}).sort_values(by="Total day charge"))
+
+# Номер 17
+print("\n\nНомер 17")
+print(df.groupby(['Area code']).mean(numeric_only=True))
+
+# Номер 17
+print("\n\nНомер 17")
+print(df.loc[[100,102,104],['State', 'Churn']])
