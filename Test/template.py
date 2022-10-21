@@ -75,7 +75,7 @@ def task8(f, min_x, max_x, N, min_y, max_y):
     plt.savefig('function.jpg')
 
 
-#############
+############# Не до конца
 def task9(data, x_array, y_array, threshold):
     plt.figure(figsize=(7, 6))
     plt.title('Task8')
@@ -83,8 +83,6 @@ def task9(data, x_array, y_array, threshold):
     plt.ylabel("Y")
     plt.hist(data)
     plt.savefig('histograms_0.png')
-
-
 ################
 
 def task10(list_of_smth, n):
@@ -114,6 +112,7 @@ def task11(filename="infile.csv"):
     plt.savefig('dataframe.pdf')
 
 
+# Не все пункты
 def task12(filename="video-games.csv"):
     csv = pd.read_csv('video-games.csv')
     info = dict()
