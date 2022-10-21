@@ -1,6 +1,5 @@
 import random as rnd
 import numpy as np
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -103,7 +102,6 @@ def task11(filename="infile.csv"):
     df['x'] = df['x'].interpolate()
     df['x_err'] = df['x_err'].fillna(df['x_err'].mean())
     df = df.dropna()
-    print(df)
 
     plt.figure(figsize=(7, 6))
     plt.title('Task11')
@@ -131,6 +129,3 @@ def task12(filename="video-games.csv"):
     info['max_raiting_by_years'] = pd.DataFrame((csv.groupby('year')[['review_raiting','title']].max())['title'])
     info['creators'] = set((','.join(list(csv['publisher'].dropna()))).split(','))
     return info
-
-
-print(task12()['creators'])
