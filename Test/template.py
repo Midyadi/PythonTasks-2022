@@ -90,7 +90,7 @@ def task9(data, x_array, y_array, threshold):
 def task10(list_of_smth, n):
     for i in range(len(list_of_smth)):
         newlist = list_of_smth[i:(i + n + 1) * ((i + n + 1) <= len(list_of_smth)) + len(list_of_smth) * (
-                    (i + n + 1) > len(list_of_smth))]
+                (i + n + 1) > len(list_of_smth))]
         list_of_smth[i] = np.mean(newlist)
     return list_of_smth
 
@@ -124,8 +124,9 @@ def task12(filename="video-games.csv"):
     info['age_max_price'] = (csv.groupby('age_raiting')[['price', 'title']].max())['title']
     info['mean_raiting_1_2'] = csv[(csv['max_players'] == 1) | (csv['max_players'] == 2)]['review_raiting'].mean()
     info['min_max_price'] = csv.groupby('age_raiting').agg(Max_price=('price', 'max'), Min_price=('price', 'min'),
-                                                           Mean_sale=('sales_metric', 'mean')).sort_values(by='Max_price')
+                                                           Mean_sale=('sales_metric', 'mean')).sort_values(
+        by='Max_price')
     info['n_games_by_age'] = pd.DataFrame(csv.groupby('review_raiting')['title'].count())
-    info['max_raiting_by_years'] = pd.DataFrame((csv.groupby('year')[['review_raiting','title']].max())['title'])
+    info['max_raiting_by_years'] = pd.DataFrame((csv.groupby('year')[['review_raiting', 'title']].max())['title'])
     info['creators'] = set((','.join(list(csv['publisher'].dropna()))).split(','))
     return info
