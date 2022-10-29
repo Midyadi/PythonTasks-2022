@@ -7,7 +7,7 @@ pygame.init()
 
 # Настройка экрана
 FPS = 100
-display_size = (600, 400)
+display_size = (900, 600)
 screen = pygame.display.set_mode(display_size)
 pygame.display.set_caption('Catch me if you can!')
 
@@ -16,6 +16,7 @@ max_figure_size = 80
 min_figure_size = 30
 
 # Настройка цветов
+WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 VIOLET = (127, 0, 255)
