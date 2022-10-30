@@ -41,7 +41,7 @@ def new_ball():
 
 
 def new_snitch():
-    '''Создаёт особую мишень "снитч" в случайном месте.
+    '''Создаёт особую мишень - золотой "снитч" - в случайном месте.
     Снитч меньше любого шара не менее чем 3 раза и движется в 3 раза быстрее
     За поимку снитча даётся 3 очка'''
     x_s = randint(min_figure_size // 3, display_size[0] - min_figure_size // 3)
@@ -54,7 +54,7 @@ def new_snitch():
 
 
 def get_starting_objects(obj_count=3):
-    '''Создаёт список первых ШАРОВ (сничт не может появиться на старте) для отрисовки'''
+    '''Создаёт список первых "obj_count" ШАРОВ (снитч не может появиться на старте) для отрисовки'''
     starting_objs = []
     for _ in range(obj_count):
         ball = new_ball()
@@ -82,6 +82,8 @@ def is_hit(x_o, y_o, r_o):
     return (x_o - x_cl) ** 2 + (y_o - y_cl) ** 2 <= r_o ** 2
 
 
+# В данной версии игры объекты отскакивают от стенок реалистично,
+# поэтому следующая функция используется только при создании нового объекта
 def get_phi(min_phi=0, max_phi=359):
     '''Возвращает случайный угол в градусах'''
     phi = randint(min_phi, max_phi)
@@ -127,10 +129,10 @@ miss_counter = 0
 
 # Счётчик для заливки фона на несколько кадров при промахе или поимке снитча (при больших FPS)
 # При больших FPS заливка только одного кадра недостаточна
-miss = -1
-snitch = -1
+miss_fill = -1
+snitch_fill = -1
 
-objects_on_screen = get_starting_objects(3)
+objects_on_screen = get_starting_objects()
 
 while not finished:
     clock.tick(FPS)
@@ -138,18 +140,18 @@ while not finished:
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            for obj in reversed(objects_on_screen):
+            for obj in reversed(objects_on_screen):   # Чтобы при наложении объектов попадание считалось по верхнему
                 x, y, r = obj[1][0], obj[1][1], obj[2]
                 if is_hit(x, y, r):
-                    if r >= min_figure_size:
+                    if r >= min_figure_size:  # Если объект - это шар
                         print('Hit a ball!')
                         hit_counter += 1
                         ball_counter += 1
-                    else:
+                    else:                     # Если объект - это снитч
                         print('HIT A SNITCH!!!')
                         hit_counter += 3
                         snitch_counter += 1
-                        snitch = FPS // 20
+                        snitch_fill = FPS // 20
                     decider = randint(0, 9)  # Вероятность появления снитча -  0,1
                     if decider == 0 and all(obyect[2] >= min_figure_size for obyect in objects_on_screen):
                         # Второе условие не допускает несколько снитчей одновременно на экране
@@ -162,17 +164,17 @@ while not finished:
                 print('Missed')
                 miss_counter += 1
                 screen.fill(RED)
-                miss = FPS // 20
-    if miss >= 0:
-        miss -= 1
-    if snitch >= 0:
-        snitch -= 1
+                miss_fill = FPS // 20
+    if miss_fill >= 0:
+        miss_fill -= 1
+    if snitch_fill >= 0:
+        snitch_fill -= 1
     moving_objects()
     objects_draw()
     pygame.display.update()
-    if miss >= 0:
+    if miss_fill >= 0:
         screen.fill(RED)
-    elif snitch >= 0:
+    elif snitch_fill >= 0:
         screen.fill(GOLDEN)
     else:
         screen.fill(BLACK)
