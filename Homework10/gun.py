@@ -90,6 +90,13 @@ class Ball:
         """Проверяет, не упал ли снаряд вниз за пределы экрана."""
         return self.y - self.vy - 2 * self.r > HEIGHT
 
+    def gun_hit(self, obj):
+        """Проверяет, врезалась ли мишень в пушку"""
+        if ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) >= ((self.x + self.vx - obj.x) ** 2 + (self.y - self.vy - obj.y) ** 2):
+            return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
+        else:
+            return False
+
 
 class Gun:
     def __init__(self):
@@ -134,7 +141,7 @@ class Gun:
             self.color = GREY
 
     def draw(self):
-        "Рисует 'базу' пушки - круг и ствол - прямоугольник"
+        """Рисует 'базу' пушки - круг и ствол - прямоугольник"""
         pygame.draw.polygon(self.screen, self.color,
                             [(self.x - math.sin(self.an) * self.gun_l, self.y + math.cos(self.an) * self.gun_l),
                              (self.x + math.sin(self.an) * self.gun_l, self.y - math.cos(self.an) * self.gun_l), (
@@ -202,8 +209,12 @@ class Target:
             self.vy = -self.vy
 
     def gun_hit(self, obj):
-        """Проверяет, врезалась ли мишень в пушку"""
-        return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
+        """Проверяет, врезался ли снаряд в пушку"""
+        if ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) > (
+                (self.x + self.vx - obj.x) ** 2 + (self.y + self.vy - obj.y) ** 2):
+            return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
+        else:
+            return False
 
 
 pygame.init()
@@ -247,6 +258,8 @@ while not finished:
     for b in balls:
         b.wall_hit()
         b.move()
+        if b.gun_hit(gun):
+            finished = True
         if b.is_gone():
             del balls[balls.index(b)]
         if b.hit_test(target1):
