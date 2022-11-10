@@ -92,7 +92,8 @@ class Ball:
 
     def gun_hit(self, obj):
         """Проверяет, врезалась ли мишень в пушку"""
-        if ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) >= ((self.x + self.vx - obj.x) ** 2 + (self.y - self.vy - obj.y) ** 2):
+        if ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) >= ((self.x + self.vx - obj.x) ** 2 +
+                                                               (self.y - self.vy - obj.y) ** 2):
             return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
         else:
             return False
@@ -121,8 +122,8 @@ class Gun:
         Происходит при отпускании кнопки мыши.
         Начальные значения компонент скорости мяча vx и vy зависят от положения мыши.
         """
-        global balls, bullet
-        bullet += 1
+        global balls, bullets
+        bullets += 1
         new_ball = Ball()
         self.an = math.atan2((event.pos[1] - new_ball.y), (event.pos[0] - new_ball.x))
         new_ball.vx = self.f2_power * math.cos(self.an)
@@ -220,7 +221,8 @@ class Target:
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Gun Fight')
-bullet = 0
+bullets = 0
+score = 0
 balls = []
 
 clock = pygame.time.Clock()
@@ -263,11 +265,17 @@ while not finished:
         if b.is_gone():
             del balls[balls.index(b)]
         if b.hit_test(target1):
+            score += 1
             target1.hit()
             target1.new_target()
         if b.hit_test(target2):
             target2.hit()
+            score += 1
             target2.new_target()
     gun.power_up()
 
+
+print(f"You scored {score} points")
+if bullets:
+    print(f"Your accuracy was {round(score/bullets*100, 2)}%")
 pygame.quit()
