@@ -260,8 +260,12 @@ elif escape:
     points = font.render(f'You got {hit_counter} points', True, WHITE)
     hit = font.render(f'You hit {ball_counter} balls and {snitch_counter} snitches', True, WHITE)
     miss = font.render(f'You missed {miss_counter} times', False, WHITE)
+    if (ball_counter + snitch_counter + miss_counter) != 0:
+        accuracy_number = round((ball_counter + snitch_counter) / (ball_counter + snitch_counter + miss_counter) * 100, 2)
+    else:
+        accuracy_number = 0
     accuracy = font.render(f'Your accuracy was '
-                           f'{round((ball_counter + snitch_counter) / (ball_counter + snitch_counter + miss_counter) * 100, 2)}%',
+                           f'{accuracy_number}%',
                            True, WHITE)
     texts = (total, points, hit, miss, accuracy)
     for i in range(len(texts)):
