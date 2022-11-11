@@ -230,8 +230,9 @@ gun = Gun()
 target1 = Target()
 target2 = Target()
 finished = False
+escape = False
 
-while not finished:
+while (not finished) and (not escape):
     screen.fill(BLACK)
     gun.draw()
     target1.draw()
@@ -242,7 +243,10 @@ while not finished:
 
     clock.tick(FPS)
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                escape = True
+        elif event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             gun.fire2_start()
@@ -254,14 +258,14 @@ while not finished:
     target1.move()
     target2.move()
     if target1.gun_hit(gun) or target2.gun_hit(gun):
-        finished = True
+        escape = True
     target1.wall_hit()
     target2.wall_hit()
     for b in balls:
         b.wall_hit()
         b.move()
         if b.gun_hit(gun):
-            finished = True
+            escape = True
         if b.is_gone():
             del balls[balls.index(b)]
         if b.hit_test(target1):
@@ -274,8 +278,25 @@ while not finished:
             target2.new_target()
     gun.power_up()
 
-
-print(f"You scored {score} points")
-if bullets:
-    print(f"Your accuracy was {round(score/bullets*100, 2)}%")
-pygame.quit()
+if finished:
+    pygame.quit()
+elif escape:
+    escape = False
+    screen.fill(BLACK)
+    font = pygame.font.Font(None, 36)
+    total = font.render("Total:", True, WHITE)
+    score_text = font.render(f"You scored {score} points", True, WHITE)
+    if bullets:
+        accuracy_number = round(score / bullets * 100, 2)
+    else:
+        accuracy_number = 0
+    accuracy = font.render(f"Your accuracy was {accuracy_number}%", True, WHITE)
+    texts = (total, score_text, accuracy)
+    for i in range(len(texts)):
+        screen.blit(texts[i], (WIDTH // 2, HEIGHT // 2 + 40 * i))
+        pygame.display.update()
+    while (not finished) and (not escape):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                finished = True
+    pygame.quit()
