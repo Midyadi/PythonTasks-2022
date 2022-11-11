@@ -21,13 +21,15 @@ HEIGHT = 600
 
 class Ball:
     def __init__(self, x=20, y=550):
-        """ Конструктор класса ball
+        """
+        Конструктор класса ball
 
         Args:
-        x - начальное положение мяча по горизонтали
-        y - начальное положение мяча по вертикали
-        Определяются положением пушки
+            x - начальное положение мяча по горизонтали
+            y - начальное положение мяча по вертикали
+            Определяются положением пушки
         """
+
         self.screen = screen
         self.x = x
         self.y = y
@@ -38,7 +40,8 @@ class Ball:
         self.live = 30
 
     def move(self):
-        """Переместить мяч по прошествии единицы времени.
+        """
+        Переместить мяч по прошествии единицы времени.
 
         Метод описывает перемещение мяча за один кадр перерисовки. То есть, обновляет значения
         self.x и self.y с учетом скоростей self.vx и self.vy, сил гравитаций и сопротивления среды,
@@ -58,7 +61,10 @@ class Ball:
             self.vy += 0.001 * self.vy ** 2
 
     def draw(self):
-        """ Рисует мяч-снаряд"""
+        """
+        Рисует мяч-снаряд
+        """
+
         pygame.draw.circle(
             self.screen,
             self.color,
@@ -67,18 +73,24 @@ class Ball:
         )
 
     def hit_test(self, obj):
-        """Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
+        """
+        Функция проверяет сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
 
         Args:
             obj: Обьект, с которым проверяется столкновение.
+
         Returns:
             Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
         """
+
         return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
 
     def wall_hit(self):
-        """Проверяет, есть ли столкновение с одной из 3х стен (кроме нижней) и сеняет направление движения снаряда
-        с учётом потерь энергии при столкновении"""
+        """
+        Проверяет, есть ли столкновение с одной из 3х стен (кроме нижней) и меняет направление движения снаряда
+        с учётом потерь энергии при столкновении
+        """
+
         if self.x + self.vx - self.r < 0:
             self.vx = -self.vx + 0.002 * self.vx
         elif self.y - self.vy - self.r < 0:
@@ -87,11 +99,29 @@ class Ball:
             self.vx = -self.vx - 0.002 * self.vx
 
     def is_gone(self):
-        """Проверяет, не упал ли снаряд вниз за пределы экрана."""
+        """
+        Проверяет, не упал ли снаряд вниз за пределы экрана.
+
+        Returns:
+            True, если снаряд покинул пределы экрана
+            False иначе
+        """
+
         return self.y - self.vy - 2 * self.r > HEIGHT
 
     def gun_hit(self, obj):
-        """Проверяет, врезалась ли мишень в пушку"""
+        """
+        Проверяет, врезалась ли мишень в пушку
+
+        Args:
+            obj - объект, проходящий проверку на попадание в пушку
+
+        Returns:
+            True, если объект приближается к центру пушки (чтобы только выпущенные снаряды не проходили проверку)
+                  и накладывается на пушку
+            False, если объект удаляется от пушки или не накладывается на неё
+        """
+
         if ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) >= ((self.x + self.vx - obj.x) ** 2 +
                                                                (self.y - self.vy - obj.y) ** 2):
             return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
@@ -101,7 +131,10 @@ class Ball:
 
 class Gun:
     def __init__(self):
-        """Конструктор класса Gun"""
+        """
+        Конструктор класса Gun
+        """
+
         self.screen = screen
         self.f2_power = 10
         self.f2_on = 0
@@ -113,15 +146,20 @@ class Gun:
         self.gun_l = 5
 
     def fire2_start(self):
-        """Активирует апгрейд пушки."""
+        """
+        Активирует апгрейд пушки.
+        """
+
         self.f2_on = 1
 
     def fire2_end(self):
-        """Выстрел мячом.
+        """
+        Выстрел мячом.
 
         Происходит при отпускании кнопки мыши.
         Начальные значения компонент скорости мяча vx и vy зависят от положения мыши.
         """
+
         global balls, bullets
         bullets += 1
         new_ball = Ball()
@@ -133,7 +171,10 @@ class Gun:
         self.f2_power = 10
 
     def targetting(self):
-        """Прицеливание. Зависит от положения мыши."""
+        """
+        Прицеливание. Зависит от положения мыши.
+        """
+
         if event and event.pos[0] != 20:
             self.an = math.atan((event.pos[1] - 450) / (event.pos[0] - 20))
         if self.f2_on:
@@ -142,7 +183,10 @@ class Gun:
             self.color = GREY
 
     def draw(self):
-        """Рисует 'базу' пушки - круг и ствол - прямоугольник"""
+        """
+        Рисует 'базу' пушки - круг и ствол - прямоугольник
+        """
+
         pygame.draw.polygon(self.screen, self.color,
                             [(self.x - math.sin(self.an) * self.gun_l, self.y + math.cos(self.an) * self.gun_l),
                              (self.x + math.sin(self.an) * self.gun_l, self.y - math.cos(self.an) * self.gun_l), (
@@ -154,7 +198,10 @@ class Gun:
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.r)
 
     def power_up(self):
-        """Увеличивает начальную скорость снаряда"""
+        """
+        Увеличивает начальную скорость снаряда
+        """
+
         if self.f2_on:
             if self.f2_power < FPS * 2:
                 self.f2_power += 1
@@ -167,7 +214,10 @@ class Gun:
 
 class Target:
     def __init__(self):
-        """Конструктор класса Target"""
+        """
+        Конструктор класса Target
+        """
+
         self.screen = screen
         self.points = 0
         self.x = random.randint(30, 780)
@@ -178,7 +228,10 @@ class Target:
         self.color = CYAN
 
     def new_target(self):
-        """ Инициализация новой цели. """
+        """
+        Инициализация новой цели.
+        """
+
         self.x = random.randint(30, 780)
         self.y = random.randint(30, 550)
         self.r = random.randint(10, 20)
@@ -186,20 +239,32 @@ class Target:
         self.vy = random.randint(0, 3)
 
     def hit(self, points=1):
-        """Попадание шарика в цель."""
+        """
+        Попадание шарика в цель.
+        """
+
         self.points += points
 
     def draw(self):
-        """Рисует мишень"""
+        """
+        Рисует мишень
+        """
+
         pygame.draw.circle(self.screen, self.color, (self.x, self.y), self.r)
 
     def move(self):
-        """Отвечает за движение мишени"""
+        """
+        Отвечает за движение мишени
+        """
+
         self.x += self.vx * 50 / FPS
         self.y -= self.vy * 50 / FPS
 
     def wall_hit(self):
-        """Проверяет, есть ли столкновение с одной из стен"""
+        """
+        Проверяет, есть ли столкновение с одной из стен и меняет направление скорости
+        """
+
         if self.x + self.vx - self.r < 0:
             self.vx = -self.vx
         elif self.y - self.vy - self.r < 0:
@@ -210,7 +275,18 @@ class Target:
             self.vy = -self.vy
 
     def gun_hit(self, obj):
-        """Проверяет, врезался ли снаряд в пушку"""
+        """
+        Проверяет, врезался ли снаряд в пушку
+
+        Args:
+            obj - объект, проходящий проверку на попадание в пушку
+
+        Returns:
+            True, если объект приближается к центру пушки (чтобы только выпущенные снаряды не проходили проверку)
+                  и накладывается на пушку
+            False, если объект удаляется от пушки или не накладывается на неё
+        """
+
         if ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) > (
                 (self.x + self.vx - obj.x) ** 2 + (self.y + self.vy - obj.y) ** 2):
             return ((self.x - obj.x) ** 2 + (self.y - obj.y) ** 2) <= (self.r + obj.r) ** 2
