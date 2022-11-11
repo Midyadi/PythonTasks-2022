@@ -251,7 +251,7 @@ while (not finished) and (not escape):
         screen.fill(BLACK)
 
 if finished:
-   pygame.quit()
+    pygame.quit()
 elif escape:
     escape = False
     screen.fill(BLACK)
