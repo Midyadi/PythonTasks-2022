@@ -176,7 +176,7 @@ class Gun:
         """
 
         if event and event.pos[0] != 20:
-            self.an = math.atan((event.pos[1] - 450) / (event.pos[0] - 20))
+            self.an = math.atan2((event.pos[1] - 450), (event.pos[0] - 20))
         if self.f2_on:
             self.color = self.color
         else:
@@ -297,6 +297,7 @@ class Target:
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Gun Fight')
+
 bullets = 0
 score = 0
 balls = []
@@ -305,6 +306,7 @@ clock = pygame.time.Clock()
 gun = Gun()
 target1 = Target()
 target2 = Target()
+
 finished = False
 escape = False
 
@@ -337,6 +339,7 @@ while (not finished) and (not escape):
         escape = True
     target1.wall_hit()
     target2.wall_hit()
+
     for b in balls:
         b.wall_hit()
         b.move()
@@ -360,12 +363,18 @@ elif escape:
     escape = False
     screen.fill(BLACK)
     font = pygame.font.Font(None, 36)
+
     total = font.render("Total:", True, WHITE)
-    score_text = font.render(f"You scored {score} points", True, WHITE)
+    if score != 1:
+        score_text = font.render(f"You scored {score} points", True, WHITE)
+    else:
+        score_text = font.render(f"You scored {score} point", True, WHITE)
+
     if bullets:
         accuracy_number = round(score / bullets * 100, 2)
     else:
         accuracy_number = 0
+
     accuracy = font.render(f"Your accuracy was {accuracy_number}%", True, WHITE)
     texts = (total, score_text, accuracy)
     for i in range(len(texts)):
